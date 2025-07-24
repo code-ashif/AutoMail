@@ -80,14 +80,17 @@ def launch():
             msg['To'] = to_email
             msg['Subject'] = subject
 
+            # ✅ Format the HTML email body
             try:
                 formatted_body = body.format(name=to_name, company_name=to_company_name)
             except Exception as e:
                 messagebox.showerror("Template Error", f"Body formatting failed:\n{e}")
+                print("Here is the error !")
                 return
 
-            msg.attach(MIMEText(formatted_body, 'plain'))
+            msg.attach(MIMEText(formatted_body, 'html'))
 
+            # ✅ Attachment handling
             try:
                 with open(resume, 'rb') as file:
                     filename = basename(resume)
@@ -104,7 +107,7 @@ def launch():
             except Exception as e:
                 print(f"Failed to send email to {to_email}: {e}")
 
-        messagebox.showinfo("Success", "All emails processed.")
+        messagebox.showinfo("Success", "All HTML emails sent successfully.")
 
     except Exception as e:
         messagebox.showerror("SMTP Error", f"SMTP setup failed:\n{e}")
@@ -113,6 +116,7 @@ def launch():
             server.quit()
         except:
             pass
+
 
 # GUI Setup
 window = Tk()
